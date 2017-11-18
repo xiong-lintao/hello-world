@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    .clock {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 400px;
+        height: 400px;
+        background: #aaa;
+        border-radius: 5px;
+    }
+    .bg {
+        width: 360px;
+        height: 360px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -180px;
+        margin-left: -180px;
+        transform: rotate(-90deg)
+    }
+    .point {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -14px;
+        margin-left: -14px;
+    }
+    .point .circle {
+        width: 28px;
+        height: 28px;
+        background: #000;
+        border-radius: 50%;
+
+    }
+    .point .hour {
+        width: 80px;
+        height: 16px;
+        background: #000;
+        border-radius: 16px;
+        position: absolute;
+        margin: 6px 0 0 14px;
+        transform-origin: 0 8px;
+    }
+    .point .min {
+        width: 100px;
+        height: 12px;
+        background: #000;
+        border-radius: 12px;
+        position: absolute;
+        margin: 8px 0 0 14px;
+        transform-origin: 0 6px;
+    }
+    .point .secs {
+        width: 135px;
+        height: 6px;
+        background: #000;
+        border-radius: 6px;
+        position: absolute;
+        margin: 11px 0 0 14px;
+        transform-origin: 0 3px;
+    }
+    .number {
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+        position: absolute;
+        line-height: 50px;
+        text-align: center;
+        transform: rotate(90deg)
+    }
+    /* .box {
+        width:100px;
+        height: 100px;
+        background:pink;
+        transform-origin: 100px 100px;
+    } */
+
+</style>
+<body>
+    <div class="clock">
+        <div class="bg">
+            <div class="point">
+                <div class="hour"></div>
+                <div class="min"></div>
+                <div class="secs"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="box">
+
+    </div> -->
+    <script>
+        let bg = document.querySelector('.bg')
+        let hour = document.querySelector('.hour')
+        let min = document.querySelector('.min')
+        let secs = document.querySelector('.secs')
+        drawNumber()
+        clock()
+        setInterval(clock,1000)
+
+        //验证旋转时  旋转圆心在哪
+        // let box = document.querySelector('.box')
+        // let i = 1
+        // setInterval(function(){
+        //     i = i + 10
+        //     box.style.transform = `rotate(${i}deg)`
+        // },1000/60)
+
+
+        function drawNumber(){
+            let pointx = 180
+            let pointy = 180
+            let r = 150
+            let deg = Math.PI*2/12
+            for(let i = 1; i <= 12; i++){
+                rDeg = i*deg
+                let x = pointx + r*Math.cos(rDeg)
+                let y = pointy + r*Math.sin(rDeg)
+                let number = document.createElement('div')
+                number.className = 'number'
+                number.innerHTML = i
+                number.style.left = x - 25 +'px'
+                number.style.top = y - 25 + 'px'
+                bg.appendChild(number)
+            }
+        }
+        function clock(){
+            let date = new Date()
+            let hourDeg = date.getHours()*30
+            let minDeg = date.getMinutes()*6
+            let secsDeg = date.getSeconds()*6
+            hour.style.transform = `rotate(${hourDeg}deg)`
+            min.style.transform = `rotate(${minDeg}deg)`
+            secs.style.transform = `rotate(${secsDeg}deg)`
+        }
+
+    </script>
+</body>
+</html>
