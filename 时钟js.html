@@ -146,7 +146,8 @@
         }
         function clock(){
             let date = new Date()
-            let hourDeg = date.getHours()*30
+            // let hourDeg = date.getHours()*30 //这里会有一个bug
+            let hourDeg = date.getHours()*30 + date.getMinutes()/60*30
             let minDeg = date.getMinutes()*6
             let secsDeg = date.getSeconds()*6
             hour.style.transform = `rotate(${hourDeg}deg)`
