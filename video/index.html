@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>view</title>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+	<div class="box">
+		<video width="600" height="400" class="video" src="./movie.mp4"></video>
+		<div class="items">
+			<div class="control">
+				<a href="javascript:void(0);" class="controlss"><img src="icon/stop.png" alt="" width="20" height="20"></a>
+			</div>
+			<div class="progressTime">
+    			<span class="current"></span> /
+   				<span class="duration"></span>
+			</div>
+			<div class="progressBar">
+   				<div class="timeBar"></div>
+   				<div class="bufferBar"></div>
+			</div>
+			<a href="javascript:void(0);" class="muted"><img src="icon/mstart.png" alt="" width="20" height="20"></a>
+			<div class="volumeBar">
+   				<div class="volume"></div>
+			</div>
+			<div class="fullScreen">
+				<a href="javascript:void(0);" class="fullScreenss"><img src="icon/full.png" alt="" width="20" height="20"></a>
+			</div>
+		</div>
+		<a href="javascript:void(0);" class="light on"><img src="icon/lightstart.png" alt="" width="20" height="20"></a>
+	</div>
+	<script type="text/javascript" src='js/jquery.min.js'></script>
+	<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
