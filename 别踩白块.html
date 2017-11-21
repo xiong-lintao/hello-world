@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding:0;
+        margin:0
+    }
+    html,body {
+        width:100%;
+        height:100%;
+    }
+    .box {
+        width:100%;
+        height:100%;
+        background-color: #000;
+        position:relative;
+    }
+    .box2 {
+        display: none;
+        width:300px;
+        height:500px;
+        background-color: rgba(255,255,100,0.5)
+    }
+    #cd,.box2 {
+        /* background: #fff; */
+        position:absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        margin:auto
+    }
+    input {
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left: -29px;
+        margin-top: -10px;
+    }
+</style>
+<body>
+    <div class="box">
+        <canvas id="cd" width='300' height='500'></canvas>
+        <div class="box2">
+            <input type="button" value="再来一局" class="ipt">
+        </div>
+    </div>
+
+    <script>
+        let box2 = document.querySelector('.box2')
+        let ipt = document.querySelector('.ipt')
+        let cd = document.querySelector('#cd')
+        let ctn = cd.getContext('2d')
+        let r = 4, c = 4
+        let {width,height} = cd 
+        let block_w = width/r
+        let block_h = height/c
+        let topp = -block_h
+        let data = []
+        let speed
+        let timer = null
+
+        init()
+        
+        cd.onclick = function(e){
+            let x = e.offsetX
+            let y = e.offsetY - topp
+            let xNum = Math.floor(x/block_w)
+            let yNum = Math.floor(y/block_h)
+            // alert(`${xNum}--${yNum}`)
+            if(data[yNum][xNum]==0){
+                clearInterval(timer)
+                topp = -block_h
+                box2.style.display = 'block'
+            }else{
+                speed = 1.05*speed
+                data[yNum][xNum]=0
+                draw()
+            }
+        }
+        ipt.onclick = function(){
+            init()
+        }
+
+        function init(){
+            for(let i = 0; i <= c; i++){
+                data[i] = creatLine()
+            }
+            speed = 10
+            box2.style.display = 'none'
+            timer = setInterval(function(){
+                topp = topp + speed
+                if(topp>=0){
+                    let arr = data.pop()
+                    if(arr.includes(1)){
+                        clearInterval(timer)
+                        topp = -block_h
+                        box2.style.display = 'block'
+                    }
+                    data.unshift(creatLine())
+                    topp = -block_h
+                }
+                draw()
+            },100)
+        }
+
+
+
+
+
+        function draw(){
+            ctn.clearRect(0,0,width,height)
+            data.forEach((item1,row)=>{
+                item1.forEach((item2,colum)=>{
+                    if(item2==1){
+                        ctn.fillStyle = '#000'
+                    }else{
+                        ctn.fillStyle = '#fff'
+                    }
+                    ctn.strokeStyle = '#999'
+                    ctn.fillRect(colum*block_w,row*block_h + topp,block_w,block_h)
+                    ctn.strokeRect(colum*block_w,row*block_h + topp,block_w,block_h)
+                })
+            })
+        }
+        function creatLine(){
+            let line = []
+            for(let i = 0; i < c; i++){
+                line[i] = 0
+            }
+            line[Math.floor(Math.random()*(c-1))] = 1
+            return line
+        }
+       
+
+
+    </script>
+    
+    
+</body>
+</html>
+
