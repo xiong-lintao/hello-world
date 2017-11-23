@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background: black;
+    }
+    #cvs {
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom:0;
+        margin:auto;
+        background-color: #555;
+    }
+    #cvs1 {
+        background-color: pink;
+    }
+</style>
+<body>
+    
+    <canvas id="cvs" width="400" height="400"></canvas>
+    <input type="color" id="ipt">
+    <canvas id="cvs1" width="400" height="400"></canvas>
+    <script>
+        //饼图
+        let cvs = document.querySelector('#cvs')
+        let ctn = cvs.getContext('2d')
+        let color = ['red','pink','yellow','blue']
+        let x = 200, y = 200, r = 60;
+        let arr = [50,100,20,25]
+        let result = arr.reduce((tmp,item,index)=>{
+            return tmp+item
+        })
+        let newArr = arr.map((item,index)=>{
+            return item/result*Math.PI*2
+        })
+        let startDeg = 0;
+        let endDeg = 0;
+        newArr.forEach((item,index)=>{
+            endDeg = endDeg + item
+            drawCicle(x,y,r,startDeg,endDeg,color[index])
+            drawText(x,y,r,startDeg,endDeg)
+            startDeg = endDeg
+        })
+        function drawCicle(x,y,r,startDeg,endDeg,color){
+            ctn.beginPath()
+            let pointX = x + r*Math.cos(startDeg)
+            let pointY = x + r*Math.sin(startDeg)
+            ctn.moveTo(x,y)
+            ctn.lineTo(pointX,pointY) 
+            ctn.arc(x,y,r,startDeg,endDeg,false)
+            ctn.closePath()
+            ctn.fillStyle= color
+            ctn.fill()
+        }
+        function drawText(x,y,r,startDeg,endDeg){
+            let textDeg = (startDeg + endDeg)/2
+            let textX = x + 3/5*r*Math.cos(textDeg)
+            let textY = y + 3/5*r*Math.sin(textDeg)
+            ctn.font = '15px 宋体'
+            ctn.fillStyle= 'black'
+            ctn.textBaseline = 'middle'
+            ctn.textAlign = 'center'
+            let text = Math.floor((endDeg - startDeg)/(Math.PI*2)*100)
+            ctn.fillText(`${text}%`,textX,textY,20)
+        } 
+
+
+
+         //自定义画笔
+         let cvs1 = document.querySelector('#cvs1')
+            let cts = cvs1.getContext('2d')
+            let ipt = document.querySelector('#ipt')
+            
+            cvs1.onmousedown = function(e){
+                let xx = true;
+                let startMouseX = e.offsetX
+                let startMouseY = e.offsetY
+                let color = ipt.value
+                cvs1.onmousemove = function(e){
+                    if(xx){
+                        cts.beginPath()
+                        cts.moveTo(startMouseX,startMouseY)
+                        console.log(startMouseY)
+                        let moveX = e.offsetX
+                        let moveY = e.offsetY
+                        cts.lineTo(moveX,moveY)
+                        cts.strokeStyle = color
+                        cts.stroke()
+                        startMouseX = moveX
+                        startMouseY = moveY
+                        cvs1.onmouseup = function(){
+                            xx = false
+                        }
+                    }
+                    
+
+                }     
+            }
+
+       
+    </script>
+</body>
+</html>

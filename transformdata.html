@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .box {
+        width:500px;
+        height:500px;
+        border:1px solid pink;
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        margin:auto;
+    }
+    #txt {
+        position:absolute;
+        top:200px;
+        left:200px;
+    }
+</style>
+<body>
+    <div class="box">
+        <p id="txt">拖入文件</p>
+    </div>
+    <img src="" alt="" id="img">
+    <script>
+        let box = document.querySelector('.box')
+        let txt = document.querySelector('#txt')
+        let img = document.querySelector('#img')
+
+
+        box.addEventListener('dragenter',function(e){
+            e.preventDefault()
+            txt.innerHTML = ''
+        })
+        box.addEventListener('dragover',function(e){
+            e.preventDefault()
+            txt.innerHTML = '请放手'
+        })
+        box.addEventListener('dragleave',function(e){
+            e.preventDefault();
+            txt.innerHTML = '拖入文件'
+        })
+        box.addEventListener('drop',function(e){
+            e.preventDefault()
+            let cont = e.dataTransfer.files
+            let fs = new FileReader()
+            let cc = cont[0]
+            fs.readAsDataURL(cc)
+            fs.onload = function(){
+              img.src = this.result  
+            }
+            
+        })
+    </script>
+</body>
+</html>
